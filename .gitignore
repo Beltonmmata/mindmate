@@ -1,0 +1,61 @@
+# ==========================
+# === GLOBAL SETTINGS ===
+# ==========================
+.DS_Store
+*.log
+*.tmp
+*.swp
+
+# ==========================
+# === BACKEND (Node.js) ===
+# ==========================
+/backend/node_modules/
+/backend/.env
+/backend/npm-debug.log
+/backend/.DS_Store
+
+# ==========================
+# === FLUTTER FRONTEND ===
+# ==========================
+/frontend/build/
+/frontend/.dart_tool/
+/frontend/.idea/
+/frontend/.vscode/
+/frontend/.pub/
+/frontend/.pub-cache/
+/frontend/.flutter-plugins
+/frontend/.flutter-plugins-dependencies
+/frontend/pubspec.lock
+
+# iOS
+/frontend/ios/Flutter/.last_build_id
+/frontend/ios/Pods/
+/frontend/ios/.symlinks/
+/frontend/ios/Flutter/Flutter.framework
+/frontend/ios/Flutter/Flutter.podspec
+
+# Android
+/frontend/android/.gradle/
+/frontend/android/app/build/
+/frontend/android/app/debug/
+/frontend/android/app/profile/
+/frontend/android/app/release/
+
+# Coverage & Docs
+/frontend/coverage/
+/frontend/doc/api/
+
+# Symbolication / Obfuscation
+/frontend/app.*.symbols
+/frontend/app.*.map.json
+
+# ==========================
+# === SYSTEM / EDITOR ===
+# ==========================
+*.iml
+*.ipr
+*.iws
+.idea/
+.atom/
+.history/
+.svn/
