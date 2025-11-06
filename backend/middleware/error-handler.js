@@ -1,5 +1,5 @@
-const { StatusCodes } = require("http-status-codes");
-const { CustomError } = require("../errors");
+import { StatusCodes } from "http-status-codes";
+import { CustomError } from "../errors/index.js";
 
 const errorHandlerMiddleware = (err, req, res, next) => {
   console.error("🔥 ERROR LOG:", err);
@@ -50,4 +50,4 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   });
 };
 
-module.exports = errorHandlerMiddleware;
+export default errorHandlerMiddleware;

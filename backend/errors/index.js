@@ -1,12 +1,5 @@
-const CustomError = require("./custom-error");
-const UnauthenticatedError = require("./unauthenticated");
-const NotFoundError = require("./not-found");
-const BadRequestError = require("./bad-request");
-const UnauthorizedError = require("./unauthorized");
-module.exports = {
-  CustomError,
-  UnauthenticatedError,
-  NotFoundError,
-  BadRequestError,
-  UnauthorizedError,
-};
+export { CustomError } from "./custom-error.js";
+export { UnauthenticatedError } from "./unauthenticated.js";
+export { NotFoundError } from "./not-found.js";
+export { BadRequestError } from "./bad-request.js";
+export { UnauthorizedError } from "./unauthorized.js";
