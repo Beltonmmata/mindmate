@@ -1,4 +1,8 @@
+import dotenv from "dotenv";
 import { Redis } from "@upstash/redis";
+
+// Load .env right here before using process.env
+dotenv.config();
 
 export const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,

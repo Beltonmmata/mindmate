@@ -64,7 +64,11 @@ const startServer = async () => {
     console.log("✅ MongoDB connected");
 
     // Redis connection
-    await redis.connect();
+    //console.log("🔍 Redis URL:", process.env.UPSTASH_REDIS_REST_URL);
+    //await redis.connect();
+    // Test Redis connection (Upstash is stateless)
+    const pong = await redis.ping();
+    console.log("✅ Redis connected:", pong);
     console.log("✅ Redis connected");
 
     // Start express server

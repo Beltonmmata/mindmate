@@ -1,47 +1,54 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user"); // Import User model
-const { UnauthenticatedError, UnauthorizedError } = require("../errors");
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
+import { UnauthenticatedError, UnauthorizedError } from "../errors/index.js";
 
-const isAuth = async (req, res, next) => {
-  let token;
-  // check cookies
-  if (!token && req.cookies?.token) {
-    token = req.cookies.token;
-  }
-
-  // Or Check Authorization header
-  if (req.headers.authorization?.startsWith("Bearer ")) {
-    token = req.headers.authorization.split(" ")[1];
-  }
-
-  if (!token) {
-    throw new UnauthenticatedError("Not authorized, no token provided");
-  }
-
-  //console.log("Received Token:", token);  //debugger
-
+/**
+ * Authentication middleware
+ * - Verifies JWT from either Authorization header or cookie
+ * - Attaches user data (without password) to req.user
+ */
+export const isAuth = async (req, res, next) => {
   try {
+    let token = null;
+
+    // 1️⃣ Check Authorization header (mobile apps and APIs)
+    if (req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    // 2️⃣ Fallback: Check cookies (for web clients)
+    if (!token && req.cookies?.token) {
+      token = req.cookies.token;
+    }
+
+    // 3️⃣ No token provided
+    if (!token) {
+      throw new UnauthenticatedError("Not authorized — token missing.");
+    }
+
+    // 4️⃣ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Fetch the user from the database
+    // 5️⃣ Fetch user
     const user = await User.findById(decoded.id).select("-password");
-    if (!user) throw new UnauthenticatedError("User not found");
+    if (!user) throw new UnauthenticatedError("User not found.");
 
-    req.user = user; // Now req.user includes name & email
-    //console.log("Authenticated User:", req.user);
-    console.log("authenticated user");
+    // 6️⃣ Attach user to request
+    req.user = user;
+    console.log("✅ Authenticated user:", user.email);
 
     next();
   } catch (error) {
-    return next(new UnauthenticatedError("Not authorized, invalid token"));
+    next(new UnauthenticatedError("Invalid or expired token."));
   }
 };
 
-const isAdmin = (req, res, next) => {
+/**
+ * Admin-only route protection
+ */
+export const isAdmin = (req, res, next) => {
   if (!req.user || !req.user.isAdmin) {
-    throw new UnauthorizedError("Access denied. Admins only.");
+    throw new UnauthorizedError("Access denied — admins only.");
   }
   next();
 };
-
-module.exports = { isAuth, isAdmin };
