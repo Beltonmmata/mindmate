@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import User from "../models/userModel.js";
 import { UnauthenticatedError, UnauthorizedError } from "../errors/index.js";
 
 /**
@@ -49,6 +49,15 @@ export const isAuth = async (req, res, next) => {
 export const isAdmin = (req, res, next) => {
   if (!req.user || !req.user.isAdmin) {
     throw new UnauthorizedError("Access denied — admins only.");
+  }
+  next();
+};
+
+/** Therapist-only route protection
+ */
+export const isTherapist = (req, res, next) => {
+  if (!req.user || req.user.role !== "therapist") {
+    throw new UnauthorizedError("Access denied — therapists only.");
   }
   next();
 };

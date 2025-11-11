@@ -11,8 +11,11 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
+import therapistRoutes from "./routes/therapistRoutes.js";
+
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+
 import { redis } from "./config/redis.js";
 
 // Load env variables early
@@ -51,6 +54,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/therapists", therapistRoutes);
 
 // ----- ERROR MIDDLEWARES -----
 app.use(notFound);
