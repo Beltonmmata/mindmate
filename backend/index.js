@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import "express-async-errors";
-import cors from "cors";
+//import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import xss from "xss-clean";
@@ -27,12 +27,13 @@ const PORT = process.env.PORT || 5000;
 // ----- CORE MIDDLEWARES -----
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: ["http://localhost:5173"], // update with your frontend
-    credentials: true,
-  })
-);
+//i have avoided cors untill i finish development porocess
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173"], // update with your frontend
+//     credentials: true,
+//   })
+// );
 app.use(helmet());
 app.use(xss());
 app.use(morgan("dev"));
