@@ -1,19 +1,19 @@
 import nodemailer from "nodemailer";
 
-export const sendEmail = async ({ to, subject, text, html }) => {
+export const sendEmail = async (to, subject, html) => {
   try {
     console.log("📧 Preparing to send email to:", to);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // MUST be true for port 465
+      secure: true, // true for port 465
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // APP PASSWORD, not Gmail password
+        user: process.env.EMAIL_USER, // Gmail app password user
+        pass: process.env.EMAIL_PASS, // MUST be Gmail App Password
       },
       tls: {
-        rejectUnauthorized: false, // helps avoid cert issues on Render
+        rejectUnauthorized: false, // avoids SSL cert issues on Render
       },
     });
 
@@ -21,7 +21,6 @@ export const sendEmail = async ({ to, subject, text, html }) => {
       from: `"MindMate Support" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      text,
       html,
     };
 

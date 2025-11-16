@@ -28,6 +28,7 @@ export const registerUser = async (req, res) => {
       // resend OTP if unverified
       const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
       await redis.set(`otp:${email}`, String(newOtp), { ex: 600 });
+      
       await sendEmail(
         email,
         "Verify your MindMate account",
@@ -52,6 +53,7 @@ export const registerUser = async (req, res) => {
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   await redis.set(`otp:${email}`, otp, { ex: 600 });
+  
 
   await sendEmail(
     email,
