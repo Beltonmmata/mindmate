@@ -12,6 +12,8 @@ void main() {
 }
 
 class MindMateApp extends StatelessWidget {
+  const MindMateApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
