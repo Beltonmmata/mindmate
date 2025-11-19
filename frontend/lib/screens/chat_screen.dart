@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('AI Chat'),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.build, size: 80, color: Colors.deepOrange),
+            const SizedBox(height: 24),
+            const Text(
+              'AI Chat',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.0),
+              child: Text(
+                'This page is under development.',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, '/dashboard'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+              ),
+              child: const Text('Go Back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
