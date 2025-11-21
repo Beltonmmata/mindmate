@@ -36,8 +36,10 @@ export const registerUser = async (req, res) => {
       );
 
       return res.status(StatusCodes.OK).json({
+        success: true,
         message:
           "Email already registered but not verified. New OTP sent to your email.",
+        data: {},
       });
     }
   }
@@ -53,7 +55,7 @@ export const registerUser = async (req, res) => {
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   await redis.set(`otp:${email}`, otp, { ex: 600 });
-  
+
 
   await sendEmail(
     email,
@@ -62,8 +64,10 @@ export const registerUser = async (req, res) => {
   );
 
   res.status(StatusCodes.CREATED).json({
+    success: true,
     message:
       "User registered successfully. OTP sent to email for verification.",
+    data: {},
   });
 };
 
@@ -92,12 +96,13 @@ export const verifyEmail = async (req, res) => {
 
   // Auto-login after verification
   const token = generateToken(user._id);
-  const { password, ...safeUser } = user._doc;
+  const { password: _, ...safeUser } = user._doc;
 
   res.status(StatusCodes.OK).json({
+    success: true,
     message: "Email verified successfully. You are now logged in.",
     token,
-    user: safeUser,
+    data: { user: safeUser },
   });
 };
 
@@ -105,22 +110,44 @@ export const verifyEmail = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("🔑 Login attempt for email:", email);
+
+  // Step 1: Find user
   const user = await User.findOne({ email });
-  if (!user) throw new NotFoundError("User not found");
+  if (!user) {
+    console.log("❌ User not found in DB");
+    throw new NotFoundError("User not found");
+  }
+  console.log("✅ User found:", user._id);
 
+  // Step 2: Check password
   const isMatch = await user.matchPassword(password);
-  if (!isMatch) throw new BadRequestError("Invalid credentials");
+  if (!isMatch) {
+    console.log("❌ Password does not match for user:", user._id);
+    throw new BadRequestError("Invalid credentials");
+  }
+  console.log("✅ Password matches");
 
-  if (!user.isVerified)
+  // Step 3: Check email verification
+  if (!user.isVerified) {
+    console.log("⚠️ User email not verified:", user._id);
     throw new BadRequestError("Please verify your email first.");
+  }
+  console.log("✅ Email verified");
 
+  // Step 4: Generate JWT token
   const token = generateToken(user._id);
+
+  // Step 5: Return safe user data
   const { password: _, ...safeUser } = user._doc;
 
+  console.log("🎉 Login successful for user:", user._id);
+
   res.status(StatusCodes.OK).json({
+    success: true,
     message: "Login successful",
     token,
-    user: safeUser,
+    data: { user: safeUser },
   });
 };
 // ================= FORGOT PASSWORD =================
@@ -147,7 +174,9 @@ export const forgotPassword = async (req, res) => {
   );
 
   res.status(StatusCodes.OK).json({
+    success: true,
     message: "Password reset OTP sent to your email.",
+    data: {},
   });
 };
 
@@ -176,7 +205,9 @@ export const resetPassword = async (req, res) => {
   await redis.del(`reset:${email}`);
 
   res.status(StatusCodes.OK).json({
+    success: true,
     message:
       "Password reset successful. You can now log in with your new password.",
+    data: {},
   });
 };

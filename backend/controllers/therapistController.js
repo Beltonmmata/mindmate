@@ -22,8 +22,8 @@ export const getAllTherapists = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     success: true,
-    count: therapists.length,
-    therapists,
+    message: "Therapists retrieved successfully",
+    data: { therapists, count: therapists.length },
   });
 };
 
@@ -42,7 +42,11 @@ export const getTherapistById = async (req, res) => {
     throw new NotFoundError("Therapist not found or not approved.");
   }
 
-  res.status(StatusCodes.OK).json({ success: true, therapist });
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: "Therapist retrieved successfully",
+    data: { therapist },
+  });
 };
 
 /**
@@ -76,7 +80,7 @@ export const updateTherapistProfile = async (req, res) => {
   res.status(StatusCodes.OK).json({
     success: true,
     message: "Profile updated successfully.",
-    therapist,
+    data: { therapist },
   });
 };
 
@@ -100,5 +104,6 @@ export const approveTherapist = async (req, res) => {
     message: `Therapist ${therapist.name} ${
       therapist.isApproved ? "approved" : "rejected"
     } successfully.`,
+    data: { therapist },
   });
 };

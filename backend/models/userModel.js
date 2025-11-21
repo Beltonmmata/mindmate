@@ -27,54 +27,28 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "therapist", "admin"],
       default: "user",
     },
+    gender:{
+     type: String,
+     enum: ["male","female"],
+     
+    },
 
     isVerified: { type: Boolean, default: false },
 
-    // 🔹 Therapist-only fields
-    specialization: {
-      type: String,
-      trim: true,
-      default: null,
-    },
-    bio: {
-      type: String,
-      trim: true,
-      maxlength: 1000,
-      default: null,
-    },
-    sessionPrice: {
-      type: Number,
-      min: 0,
-      default: null,
-    },
-    experienceYears: {
-      type: Number,
-      min: 0,
-      default: null,
-    },
-    qualifications: {
-      type: [String],
-      default: [],
-    },
-    profilePicture: {
-      type: String, // URL to Cloudinary or S3
-      default: null,
-    },
-    availability: {
-      type: [
-        {
-          day: { type: String },
-          timeSlots: [String],
-        },
-      ],
-      default: [],
-    },
-    isApproved: {
-      type: Boolean,
-      default: false, // Admin must approve therapists before they appear in listings
-    },
+    specialization: { type: String, trim: true, default: null },
+    bio: { type: String, trim: true, maxlength: 1000, default: null },
+    sessionPrice: { type: Number, min: 0, default: null },
+    experienceYears: { type: Number, min: 0, default: null },
+    qualifications: { type: [String], default: [] },
+    profilePicture: { type: String, default: null },
+    availability: [
+      {
+        day: { type: String },
+        timeSlots: [String],
+      },
+    ],
+    isApproved: { type: Boolean, default: false },
 
-    // 🔹 Common meta
     lastLogin: { type: Date },
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },
@@ -82,27 +56,9 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-//
-// 🧠 Pre-save hook to hash password
-//
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
-//
-// 🔐 Compare password method
-//
+// 🔐 Compare password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
-};
-
-//
-// 🧾 Helper: check if user is therapist & approved
-//
-userSchema.methods.isVerifiedTherapist = function () {
-  return this.role === "therapist" && this.isApproved === true;
 };
 
 export default mongoose.model("User", userSchema);
