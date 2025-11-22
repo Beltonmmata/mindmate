@@ -1,4 +1,5 @@
 import express from "express";
+
 import dotenv from "dotenv";
 import "express-async-errors";
 import morgan from "morgan";
@@ -25,6 +26,7 @@ import { redis } from "./config/redis.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 5000;
 
 // ----- CORE MIDDLEWARES -----
