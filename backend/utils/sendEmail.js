@@ -7,13 +7,10 @@ export const sendEmail = async (to, subject, html) => {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // true for port 465
+      secure: true, // required for port 465
       auth: {
-        user: process.env.EMAIL_USER, // Gmail app password user
-        pass: process.env.EMAIL_PASS, // MUST be Gmail App Password
-      },
-      tls: {
-        rejectUnauthorized: false, // avoids SSL cert issues on Render
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // must be Gmail App Password
       },
     });
 
@@ -29,7 +26,10 @@ export const sendEmail = async (to, subject, html) => {
 
     return true;
   } catch (error) {
-    console.error("❌ Email sending failed:", error);
+    console.error("❌ Email sending failed:");
+    console.error("Error Name:", error.name);
+    console.error("Error Message:", error.message);
+    console.error("Error Code:", error.code);
     return false;
   }
 };
