@@ -1,32 +1,22 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (to, subject, html) => {
   try {
-    console.log("📧 Preparing to send email to:", to);
+    console.log("📧 Sending email to:", to);
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.mailersend.net",
-      port: 587,
-      secure: false, // STARTTLS
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    const mailOptions = {
-      from: `"MindMate Support" <${process.env.EMAIL_USER}>`,
+    const response = await resend.emails.send({
+      from: "MindMate <onboarding@resend.dev>", 
       to,
       subject,
       html,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully:", info.messageId);
-
+    console.log("✅ Email sent:", response);
     return true;
   } catch (error) {
-    console.error("❌ Email sending failed:", error);
+    console.error("❌ Email send failed:", error);
     return false;
   }
 };
