@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TherapySessionsScreen extends StatelessWidget {
-  const TherapySessionsScreen({Key? key}) : super(key: key);
+  const TherapySessionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

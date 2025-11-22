@@ -10,7 +10,7 @@ class AuthService {
     String email,
     String password,
   ) async {
-    final url = Uri.parse('$BASE_URL/register');
+    final url = Uri.parse('$BASE_URL/auth/register');
     final body = jsonEncode({
       "name": name,
       "email": email,
@@ -37,7 +37,7 @@ class AuthService {
     String email,
     String otp,
   ) async {
-    final url = Uri.parse('$BASE_URL/verify-email');
+    final url = Uri.parse('$BASE_URL/auth/verify-email');
     final body = jsonEncode({"email": email, "otp": otp});
     try {
       print('AuthService.verifyEmail -> POST $url');
@@ -57,7 +57,7 @@ class AuthService {
 
   // RESEND OTP
   static Future<Map<String, dynamic>> resendOtp(String email) async {
-    final url = Uri.parse('$BASE_URL/resend-otp');
+    final url = Uri.parse('$BASE_URL/auth/resend-otp');
     final body = jsonEncode({"email": email});
     try {
       print('AuthService.resendOtp -> POST $url');
@@ -80,7 +80,7 @@ class AuthService {
     String email,
     String password,
   ) async {
-    final url = Uri.parse('$BASE_URL/login');
+    final url = Uri.parse('$BASE_URL/auth/login');
     final body = jsonEncode({"email": email, "password": password});
     try {
       print('AuthService.login -> POST $url');
@@ -110,7 +110,7 @@ class AuthService {
 
   // FORGOT PASSWORD
   static Future<Map<String, dynamic>> forgotPassword(String email) async {
-    final url = Uri.parse('$BASE_URL/forgot-password');
+    final url = Uri.parse('$BASE_URL/auth/forgot-password');
     final body = jsonEncode({"email": email});
     try {
       print('AuthService.forgotPassword -> POST $url');
@@ -134,7 +134,7 @@ class AuthService {
     String otp,
     String newPassword,
   ) async {
-    final url = Uri.parse('$BASE_URL/reset-password');
+    final url = Uri.parse('$BASE_URL/auth/reset-password');
     final body = jsonEncode({
       "email": email,
       "otp": otp,

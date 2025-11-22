@@ -16,10 +16,10 @@ class DashboardBottomNavigation extends StatelessWidget {
   final Function(int) onNavTapped;
 
   const DashboardBottomNavigation({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.onNavTapped,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

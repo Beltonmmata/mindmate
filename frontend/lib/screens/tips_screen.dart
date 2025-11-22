@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TipsScreen extends StatelessWidget {
-  const TipsScreen({Key? key}) : super(key: key);
+  const TipsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

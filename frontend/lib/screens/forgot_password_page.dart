@@ -72,14 +72,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       hintText: 'Email',
                       label: 'Email',
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty)
+                        if (v == null || v.trim().isEmpty) {
                           return 'Please enter email';
+                        }
                         final email = v.trim();
                         final emailRegex = RegExp(
                           r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}",
                         );
-                        if (!emailRegex.hasMatch(email))
+                        if (!emailRegex.hasMatch(email)) {
                           return 'Enter a valid email';
+                        }
                         return null;
                       },
                     ),

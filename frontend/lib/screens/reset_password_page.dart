@@ -80,10 +80,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           hintText: 'Enter OTP',
                           label: 'OTP',
                           validator: (v) {
-                            if (v == null || v.trim().isEmpty)
+                            if (v == null || v.trim().isEmpty) {
                               return 'Please enter the OTP';
-                            if (v.trim().length < 4)
+                            }
+                            if (v.trim().length < 4) {
                               return 'OTP seems too short';
+                            }
                             return null;
                           },
                         ),
@@ -94,10 +96,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           label: 'New Password',
                           isPassword: true,
                           validator: (v) {
-                            if (v == null || v.isEmpty)
+                            if (v == null || v.isEmpty) {
                               return 'Please enter a new password';
-                            if (v.length < 6)
+                            }
+                            if (v.length < 6) {
                               return 'Password must be at least 6 characters';
+                            }
                             return null;
                           },
                         ),

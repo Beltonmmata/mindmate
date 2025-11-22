@@ -36,7 +36,7 @@ void main() {
 }
 
 class MindMateApp extends StatelessWidget {
-  const MindMateApp({Key? key}) : super(key: key);
+  const MindMateApp({super.key});
 
   @override
   Widget build(BuildContext context) {

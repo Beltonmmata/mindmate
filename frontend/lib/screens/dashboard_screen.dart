@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/dashboard_provider.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _DashboardView extends StatelessWidget {
-  const _DashboardView({Key? key}) : super(key: key);
+  const _DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -137,36 +137,100 @@ class _Header extends StatelessWidget {
 }
 
 // ---------------------- MAIN CTA ----------------------
-class _MainCTA extends StatelessWidget {
+class _MainCTA extends StatefulWidget {
   const _MainCTA();
+
+  @override
+  State<_MainCTA> createState() => _MainCTAState();
+}
+
+class _MainCTAState extends State<_MainCTA>
+    with SingleTickerProviderStateMixin {
+  double _scale = 1.0;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return InkWell(
+
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _scale = 0.97),
+      onTapUp: (_) => setState(() => _scale = 1.0),
+      onTapCancel: () => setState(() => _scale = 1.0),
       onTap: () => Navigator.pushNamed(context, '/ai-therapy'),
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.psychology, size: 40, color: Colors.white),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'Talk to MindMate AI',
-                style: theme.textTheme.headlineSmall!.copyWith(
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 140),
+        curve: Curves.easeOut,
+        child: Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            gradient: LinearGradient(
+              colors: [
+                theme.colorScheme.primary.withOpacity(0.95),
+                theme.colorScheme.primary.withOpacity(0.75),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.primary.withOpacity(0.35),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Full height icon
+              Container(
+                padding: const EdgeInsets.only(top: 6),
+                child: const Icon(
+                  Icons.psychology,
+                  size: 50,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const Icon(Icons.arrow_forward_ios, size: 20, color: Colors.white),
-          ],
+
+              const SizedBox(width: 16),
+
+              // Text column
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Talk to MindMate AI',
+                      style: theme.textTheme.headlineSmall!.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Text(
+                          'Start chat',
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -292,7 +356,7 @@ class _Recommendations extends StatelessWidget {
     final recs = [
       _RecItem(
         icon: Icons.female,
-        title: 'Find a Female Therapist',
+        title: 'Find a Human Therapist',
         subtitle: 'Matched based on your preferences',
         route: '/therapists',
       ),

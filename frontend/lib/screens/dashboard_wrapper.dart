@@ -9,7 +9,7 @@ import 'therapy_sessions_screen.dart';
 import 'settings_screen.dart';
 
 class DashboardWrapper extends StatefulWidget {
-  const DashboardWrapper({Key? key}) : super(key: key);
+  const DashboardWrapper({super.key});
 
   @override
   State<DashboardWrapper> createState() => _DashboardWrapperState();
