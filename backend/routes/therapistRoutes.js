@@ -5,18 +5,25 @@ import {
   updateTherapistProfile,
   approveTherapist,
 } from "../controllers/therapistController.js";
-import { isAuth, isAdmin } from "../middleware/authentication.js";
+
+import { isAuth, isAdmin, isTherapist } from "../middleware/authentication.js";
 
 const router = express.Router();
 
-// 🔹 Public routes
+// --------------------------------------------------
+// PUBLIC ROUTES
+// --------------------------------------------------
 router.get("/", getAllTherapists);
 router.get("/:id", getTherapistById);
 
-// 🔹 Therapist-only route
-router.put("/profile", isAuth, updateTherapistProfile);
+// --------------------------------------------------
+// THERAPIST-ONLY ROUTES
+// --------------------------------------------------
+router.put("/profile", isAuth, isTherapist, updateTherapistProfile);
 
-// 🔹 Admin-only route
+// --------------------------------------------------
+// ADMIN-ONLY ROUTES
+// --------------------------------------------------
 router.patch("/:id/approve", isAuth, isAdmin, approveTherapist);
 
 export default router;

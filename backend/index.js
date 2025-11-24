@@ -17,6 +17,7 @@ import therapistRoutes from "./routes/therapistRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
 import chartAIRoutes from "./routes/chartAIRoutes.js";
 import insightsAnalyticsRoutes from "./routes/insightsAnalyticsRoutes.js";
+import userRouter from "./routes/userRouter.js"
 
 import notFound from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
@@ -57,6 +58,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRouter);
 app.use("/api/therapists", therapistRoutes);
 app.use("/api/ai-chat", aiChatRoutes);
 app.use("/api/chart-ai", chartAIRoutes);

@@ -4,21 +4,49 @@ import {
   updateUserProfile,
   getAllUsers,
   deleteUser,
+  updateProfilePicture,
+  deleteMyAccount
 } from "../controllers/userController.js";
-import { protect, adminOnly } from "../middlewares/authMiddleware.js";
+
+import { isAuth, isAdmin } from "../middleware/authentication.js";
+import  upload  from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-// 🧍 Get current user's profile
-router.get("/profile", protect, getUserProfile);
+// --------------------------------------------------
+// USER SELF ROUTES
+// --------------------------------------------------
 
-// ✏️ Update current user's profile
-router.put("/profile", protect, updateUserProfile);
+// Get current user's profile
+router.get("/profile", isAuth, getUserProfile);
 
-// 👥 Get all users (Admin only)
-router.get("/", protect, adminOnly, getAllUsers);
+// Update current user's profile
+router.patch("/profile", isAuth, updateUserProfile);
 
-// ❌ Delete user (Admin only)
-router.delete("/:id", protect, adminOnly, deleteUser);
+// Update profile picture
+router.patch(
+  "/profile-picture",
+  isAuth,
+  upload.single("image"),
+  updateProfilePicture
+);
+
+//user delete there own account
+router.delete("/me", isAuth, deleteMyAccount);
+
+// --------------------------------------------------
+// ADMIN ROUTES
+// --------------------------------------------------
+
+// Get all users
+router.get("/", isAuth, isAdmin, getAllUsers);
+
+
+
+// Delete a user
+router.delete("/:id", isAuth, isAdmin, deleteUser);
+
+
+
 
 export default router;
