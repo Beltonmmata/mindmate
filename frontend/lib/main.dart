@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'providers/dashboard_provider.dart';
+import 'providers/profile_provider.dart';
+
 import 'screens/landing_page.dart';
 import 'screens/login_page.dart';
 import 'screens/register_page.dart';
@@ -7,29 +11,18 @@ import 'screens/verify_email_page.dart';
 import 'screens/forgot_password_page.dart';
 import 'screens/reset_password_page.dart';
 import 'screens/dashboard_wrapper.dart';
-// ignore: unused_import
 import 'screens/therapy_sessions_screen.dart';
-// ignore: unused_import
 import 'screens/mood_tracker_screen.dart';
-// ignore: unused_import
 import 'screens/journals_screen.dart';
-// ignore: unused_import
 import 'screens/community_screen.dart';
-// ignore: unused_import
 import 'screens/settings_screen.dart';
-// ignore: unused_import
+import 'screens/profile_screen.dart';
 import 'screens/chat_screen.dart';
-// ignore: unused_import
 import 'screens/messages_screen.dart';
-// ignore: unused_import
 import 'screens/ai_therapy_screen.dart';
-// ignore: unused_import
 import 'screens/ai_tools_screen.dart';
-// ignore: unused_import
 import 'screens/therapists_screen.dart';
-// ignore: unused_import
 import 'screens/tips_screen.dart';
-import 'providers/dashboard_provider.dart';
 
 void main() {
   runApp(const MindMateApp());
@@ -40,8 +33,11 @@ class MindMateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DashboardProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'MindMate',
@@ -60,6 +56,7 @@ class MindMateApp extends StatelessWidget {
           '/journals': (_) => const JournalsScreen(),
           '/community': (_) => const CommunityScreen(),
           '/settings': (_) => const SettingsScreen(),
+          '/profile': (_) => const ProfileScreen(),
           '/chat': (_) => const ChatScreen(),
           '/messages': (_) => const MessagesScreen(),
           '/ai-therapy': (_) => const AITherapyScreen(),

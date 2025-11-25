@@ -18,13 +18,13 @@ class AuthService {
     });
     try {
       print('AuthService.register -> POST $url');
-      print('Request body: $body');
+      // print('Request body: $body');
       final res = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: body,
       );
-      print('Response ${res.statusCode}: ${res.body}');
+      //print('Response ${res.statusCode}: ${res.body}');
       return jsonDecode(res.body);
     } catch (e) {
       print('AuthService.register error: $e');
@@ -84,13 +84,13 @@ class AuthService {
     final body = jsonEncode({"email": email, "password": password});
     try {
       print('AuthService.login -> POST $url');
-      print('Request body: $body');
+      //print('Request body: $body');
       final res = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: body,
       );
-      print('Response ${res.statusCode}: ${res.body}');
+      //print('Response ${res.statusCode}: ${res.body}');
       final data = jsonDecode(res.body);
       if (res.statusCode == 200 && data['token'] != null) {
         final prefs = await SharedPreferences.getInstance();
@@ -114,13 +114,13 @@ class AuthService {
     final body = jsonEncode({"email": email});
     try {
       print('AuthService.forgotPassword -> POST $url');
-      print('Request body: $body');
+      // print('Request body: $body');
       final res = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: body,
       );
-      print('Response ${res.statusCode}: ${res.body}');
+      // print('Response ${res.statusCode}: ${res.body}');
       return jsonDecode(res.body);
     } catch (e) {
       print('AuthService.forgotPassword error: $e');
@@ -142,13 +142,13 @@ class AuthService {
     });
     try {
       print('AuthService.resetPassword -> POST $url');
-      print('Request body: $body');
+      //  print('Request body: $body');
       final res = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: body,
       );
-      print('Response ${res.statusCode}: ${res.body}');
+      // print('Response ${res.statusCode}: ${res.body}');
       return jsonDecode(res.body);
     } catch (e) {
       print('AuthService.resetPassword error: $e');

@@ -8,7 +8,7 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Top: image with downward fade shadow
+          // Top section with image
           Expanded(
             flex: 6,
             child: Stack(
@@ -33,7 +33,8 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // smooth gradient fade into the bottom content background
+
+                // Smooth gradient fade
                 Positioned(
                   left: 0,
                   right: 0,
@@ -58,74 +59,89 @@ class LandingPage extends StatelessWidget {
             ),
           ),
 
-          // Bottom: content (bottom half)
+          // Bottom section — now scrollable, overflow-proof
           Expanded(
             flex: 4,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Welcome to MindMate',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 20,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'We will help you manage your mental health.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                  ),
-                  const SizedBox(height: 22),
-
-                  // Sign In button — full width, rounded, blue
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome to MindMate',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        elevation: 4,
-                        shadowColor: Colors.black45,
                       ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
 
-                  // Register button — full width, rounded, different color (green)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/register'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade700,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                      const SizedBox(height: 8),
+
+                      Text(
+                        'We will help you manage your mental health.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                      ),
+
+                      const SizedBox(height: 22),
+
+                      // Sign In button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, '/login'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepOrange,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 4,
+                          ),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
-                        elevation: 2,
-                        shadowColor: Colors.black38,
                       ),
-                      child: const Text(
-                        'Create an account',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+
+                      const SizedBox(height: 12),
+
+                      // Register button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, '/register'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade700,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 2,
+                          ),
+                          child: const Text(
+                            'Create an account',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
                       ),
-                    ),
+
+                      const SizedBox(height: 20),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
