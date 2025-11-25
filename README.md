@@ -11,21 +11,38 @@ This repository contains the frontend (Flutter) and backend (Node.js/Express) fo
 
 ---
 
-## Table of Contents
+## 🚨 Important Links
 
-- [Project overview](#project-overview)
-- [Core features](#core-features)
-- [Problem & Solution](#problem--solution)
-- [SDG Alignment & Research](#sdg-alignment--research)
-- [Quickstart (Developers)](#quickstart-developers)
-  - [Frontend (Flutter)](#frontend-flutter)
-  - [Backend (Node.js / Express)](#backend-nodejs--express)
-- [Architecture](#architecture)
-- [Deployment](#deployment)
-- [Usage Guide (End users)](#usage-guide-end-users)
-- [Roadmap & Future Features](#roadmap--future-features)
-- [Contributing](#contributing)
+| Resource | Link |
+|---------|------|
+| **Backend API (Production)** | https://mindmate-production-92e0.up.railway.app/api |
+| **Backend Deployment (Railway)** | Deployed via Dockerfile |
+| **Pitch Deck** | https://gamma.app/docs/MindMate-t939egtgjj8ef8s?mode=present#card-i5qr7qpa4y5x0c8 |
+
+---
+
+## 📑 Table of Contents
+
+- [Project Statement](#project-statement)  
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Folder Structure](#folder-structure)  
+- [Installation & Setup](#installation--setup)  
+  - [Running Locally (Node.js)](#running-locally-nodejs)  
+  - [Running with Docker](#running-with-docker)  
+- [Environment Variables](#environment-variables)  
+- [API Overview](#api-overview)  
+- [AI Integration](#ai-integration)  
+- [Screenshots](#screenshots)  
+- [Contributing](#contributing)  
 - [License](#license)
+
+---
+
+## 📘 Project Statement
+
+MindMate is designed to make mental-health support more accessible. The platform enables users to track moods, journal, chat in support communities, interact with therapists, and gain insights powered by AI models.  
+It also includes a therapist application module, profile management, image uploads, secure authentication, and email verification.
 
 ---
 
@@ -33,16 +50,93 @@ This repository contains the frontend (Flutter) and backend (Node.js/Express) fo
 
 MindMate helps people — particularly students and young adults — understand and manage emotions in a private, non-judgmental environment. It combines conversational AI, simple habit-forming tools, and lightweight analytics to make it easier to notice mental-health trends early.
 
-## Core features
 
-- AI-powered chat companion (anonymous)
-- Mood tracking (daily logging, trends)
-- Private journaling (entries, search, optional export)
-- Curated mental health resources (articles, exercises)
-- Dashboard with quick actions and insights
-- Optional authentication and secure token flows
-- Privacy-preserving defaults (no PII by default)
+## ✨ Core Features
 
+### 🔐 Authentication & Security
+- JWT-based authentication  
+- Role-based access (User / Therapist)  
+- Email verification & password reset via **Resend**  
+- Secure password hashing with bcrypt  
+- Strong rate-limiting, helmet security, XSS filtering  
+
+### 👤 User Profile System
+- Update name, email, and profile picture (Cloudinary upload)  
+- Change password  
+- Logout functionality  
+- Delete account with confirmation prompt  
+- **Enhanced Profile Screen UI** (Flutter):  
+  - Logout button  
+  - "Apply to be a Therapist" CTA  
+  - Settings button  
+  - Navigation to "Forgot Password"  
+  - Modern layout using blue/orange theme  
+  - Clean section dividers & cards
+
+### 💬 Community & Chats
+- Real-time group chat via Socket.IO  
+- Therapist & user-based communication  
+- Media uploads for messaging (Cloudinary)
+
+### 📝 Journaling & Mood Tracking
+- Write journals  
+- Track mood trends  
+- Store and fetch entries from MongoDB  
+
+### 🤖 AI-Powered Features
+Using **HuggingFace Inference API**:
+- Mood classification  
+- Journal sentiment analysis  
+- Supportive suggestions  
+- AI-powered Chat Assistant module  
+
+### 📤 File & Image Support
+- Cloudinary for image storage  
+- Multer for upload handling  
+- Secure storage paths
+
+### 🧑‍⚕️ Therapist Application Flow
+- Complete application form  
+- Upload certifications  
+- Real-time dashboard updates  
+
+### 📱 Mobile App (Flutter)
+- Authentication UI  
+- Profile management  
+- Bottom navigation  
+- Modernized UX with Material 3 styles  
+- Screenshots (showcased below)
+
+---
+
+## ⚙️ Tech Stack
+
+### **Backend**
+- Node.js  
+- Express.js  
+- MongoDB + Mongoose  
+- Cloudinary  
+- Resend (Email provider)  
+- JWT authentication  
+- Socket.IO (Real-time chat)  
+- Upstash Redis (rate-limit + caching)
+
+### **AI / ML**
+- @huggingface/inference
+
+### **Security**
+- express-rate-limit  
+- helmet  
+- xss-clean  
+- cookie-parser  
+- bcryptjs  
+
+### **Dev Tools**
+- Morgan  
+- Compression  
+- Dockerfile for deployment  
+
+---
 ## Problem & Solution
 
 Problem: Young adults face increasing mental health challenges (stress, anxiety, loneliness), but stigma, cost, and accessibility prevent many from seeking help.
@@ -115,20 +209,12 @@ frontend/
 │  ├─ providers/
 │  ├─ screens/
 │  ├─ widgets/
+   ├─ utils/
 │  └─ services/
 ├─ pubspec.yaml
 └─ assets/
 ```
 
-State management
-
-- The app uses `provider` for state sharing and `shared_preferences` for lightweight local persistence. You may see Riverpod variants in branches.
-
-Environment configuration
-
-- The frontend determines `BASE_URL` at runtime for platform compatibility. Use `http://10.0.2.2:5000` for Android emulator, and `http://localhost:5000` for desktop.
-
-Frontend ↔ Backend communication
 
 - The frontend uses REST endpoints (JSON) via `package:http`. Requests and responses are logged in development builds to aid debugging.
 
@@ -140,30 +226,124 @@ Prerequisites
 - npm or yarn
 - (Optional) Redis account (Upstash recommended for hosted usage)
 
-Install & run (development)
+````markdown
+# MindMate Backend – Setup & API Guide
+
+---
+
+## 🚀 Installation & Setup
+
+### **Running Locally (Node.js)**
 
 ```bash
+# Clone repository
+git clone https://github.com/Beltonmmata/mindmate.git
+
+# Enter backend folder
 cd backend
+
+# Install dependencies
 npm install
-cp .env.example .env
-# edit .env
+````
+
+Create your **.env** file (see variables below).
+
+Start development server:
+
+```bash
 npm run dev
 ```
 
-Common scripts
+Start production mode:
 
-- `npm run dev` — start dev server (nodemon)
-- `npm start` — production start
+```bash
+npm start
+```
 
-Environment variables (.env.example)
+---
+
+## 🐳 Running with Docker
+
+### **1. Build the Docker image**
+
+```bash
+docker build -t mindmate-backend .
+```
+
+### **2. Run the container**
+
+```bash
+docker run -p 3000:3000 --env-file .env mindmate-backend
+```
+
+### **3. Deploy to Railway**
+
+Railway automatically detects and builds using the **Dockerfile**.
+
+---
+
+## 🔑 Environment Variables
+
+```ini
+UPSTASH_REDIS_REST_URL=***************
+UPSTASH_REDIS_REST_TOKEN=**************
+MONGO_URI = *************
+JWT_SECRET = *************
+EMAIL_USER = **************
+EMAIL_PASS = ****************
+CLOUDINARY_API_KEY = ************
+CLOUDINARY_API_SECRET = *************
+CLOUDINARY_CLOUD_NAME = ********
+HF_API_KEY = *******************
+RESEND_API_KEY=*************
 
 ```
-PORT=5000
-NODE_ENV=development
-JWT_SECRET=replace_me
-REDIS_URL=redis://:<token>@<host>:<port>
-FRONTEND_URL=http://localhost:3000
-# Optional: DATABASE_URL for persistent storage
+
+---
+
+## 📡 API Overview
+
+**Base URL:**
+
+```bash
+https://mindmate-production-92e0.up.railway.app/api
+```
+
+### **Endpoints Examples**
+
+```
+POST   /auth/register
+POST   /auth/login
+POST   /auth/forgot-password
+
+PATCH  /user/profile
+PATCH  /user/profile-picture
+DELETE /user/delete
+
+POST   /journal
+POST   /ai/analyze
+```
+
+---
+
+## 🤖 AI Integration
+
+We use the **HuggingFace Inference API** for:
+
+* Text sentiment analysis
+* Mood classification
+* Supportive dialogue suggestions
+* Mental wellness assistant
+
+Package used:
+
+```bash
+@huggingface/inference
+```
+
+---
+
+```
 ```
 
 Backend folder structure
@@ -172,7 +352,7 @@ Backend folder structure
 backend/
 ├─ controllers/   # business logic
 ├─ routes/        # route definitions (auth, chat, mood, journal)
-├─ models/        # data models (optional)
+├─ models/        # data models 
 ├─ config/        # redis, db connections
 ├─ utils/         # helpers (token, email, validation)
 └─ index.js       # server entry
@@ -229,37 +409,6 @@ Authentication workflow
 
 ---
 
-## Deployment
-- if you have clonned this repo and you want to deploy this project i have provided a well eleborated guidline below
-
-### Deploy backend to Render
-
-1. Create a new Web Service on Render and link the repository.
-2. Set build command: `npm install` and start command: `npm start` (or `npm run start:prod`).
-3. Add environment variables from your `.env` to the Render dashboard (PORT, JWT_SECRET, REDIS_URL).
-4. Deploy and test the public URL.
-
-### Deploy frontend (Flutter Web)
-
-1. Build web assets: `flutter build web --release` in `frontend/`.
-2. Upload `build/web` to a static hosting provider (Firebase Hosting, Netlify, Vercel, S3 + CloudFront).
-
-### Android
-
-Build release APK and distribute through Play Store following Google’s publishing flow:
-
-```bash
-cd frontend
-flutter build apk --release
-```
-
-### Future: iOS and Stores
-
-- For iOS, build an IPA via Xcode and publish to App Store.
-- Consider Play Store / App Store submission guidelines for handling sensitive categories (mental health).
-
----
-
 ## Usage Guide (End users)
 
 Typical user journey
@@ -271,14 +420,18 @@ Typical user journey
 
 Screenshots (placeholders)
 
-![Landing screen](frontend/assets/screenshots/landing.png)
-![Dashboard](frontend/assets/screenshots/dashboard.png)
-![Chat](frontend/assets/screenshots/chat.png)
+![Landing screen](frontend/assets/screenshots/landing_page.png)
+![Dashboard](frontend/assets/screenshots/dashboard_screen.png)
+![Login](frontend/assets/screenshots/login_page.png)
+![Register](frontend/assets/screenshots/register_screen.png)
+![Forget Password](frontend/assets/screenshots/forget_password_page.png)
+![Profile page](frontend/assets/screenshots/profile_page.png)
+
 
 Simple user flow
 
 ```
-Landing → Chat / Mood Tracker / Journal → Dashboard → Resources / Export
+Landing → Login Chat / Mood Tracker / Journal → Dashboard → Resources / Export
 ```
 
 Privacy and safety
@@ -349,7 +502,7 @@ THE SOFTWARE.
 
 ---
 
-## ## 🧠 **Problem Statement**
+## ## 🧠 **Problem Solving**
 
 Modern students and young adults silently struggle with stress, anxiety, burnout, academic pressure, relationship challenges, and loneliness.
 Yet most avoid seeking help because of:
@@ -439,13 +592,12 @@ These data points confirm that a digital, private, non-judgmental assistant is n
 
 ---
 
-## ## 🛠 **Tech Stack**
+## 🛠 **Tech Stack**
 
 ### **Frontend (Flutter)**
 
 * Dart
 * Flutter UI Widgets
-* Riverpod / Provider (if used)
 * Shared Preferences (local caching)
 
 ### **Backend (Node.js / Express)**
@@ -464,33 +616,6 @@ These data points confirm that a digital, private, non-judgmental assistant is n
 * Render (Backend Deployment)
 
 
----
-
-## ## 🧩 **Key Features**
-
-### ✔ **AI Mental Well-Being Chat**
-
-Anonymous support for expressing emotions.
-
-### ✔ **Mood Tracker**
-
-Daily logs for understanding emotional patterns.
-
-### ✔ **Journaling**
-
-Personal private space for thoughts, reflections, stress release.
-
-### ✔ **Educational Resources**
-
- mental health guidance.
-
-### ✔ **Anonymous & Secure**
-
-* No personal accounts required
-* No sensitive personal data stored
-* Minimalist and privacy-focused
-
----
 
 ## ## 🌱 **Impact**
 
@@ -506,21 +631,13 @@ It’s a tool designed for real people facing real struggles — offering real v
 
 ---
 
-## ## 📌 **Project Structure**
+## ## 📌 ** Repo Structure**
 
 ```bash
 mindmate/
-│── backend/
-│   ├── src/
-│   ├── package.json
-│   ├── .env
-│   └── ...
+│── backend/  
 │
 │── frontend/
-│   ├── lib/
-│   ├── android/
-│   ├── ios/
-│   └── pubspec.yaml
 │
 └── README.md
 ```
@@ -546,4 +663,5 @@ Passionate about building meaningful tools that improve well-being and empower p
 
 ---
 
-If you want this expanded, more formal, shorter, more academic, or more visual — just tell me.
+Interested in collaborate, contribute, or request an expanded version of this documentation?
+Reach out anytime through my GitHub profile — happy to connect.
